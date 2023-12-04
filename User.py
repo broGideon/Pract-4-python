@@ -4,7 +4,6 @@ def update_user(column: str, login: str, new_value: str):
     data = {column: new_value}
     filter = {"login": login}
     CRUD.updateData("users", data, filter)
-    print('Успешная смена')
     return
 
 def vibor(table: str, column: str, login: str):
@@ -25,12 +24,12 @@ def use_user(login: str = None, password: str = None):
     if login == None and password == None:
         login = input('Логин: ')
         password = input('Пароль: ')
-        columns = ['login', 'password']
-        filter = {'login': login}
-        data = CRUD.selectData("users", column=columns, filter=filter)
-        if password != data[1]:
-            print('Неверный логин или пароль')
-            return
+    columns = ['login', 'password']
+    filter = {'login': login}
+    data = CRUD.selectData("users", column=columns, filter=filter)
+    if password != data[1]:
+        print('Неверный логин или пароль')
+        return
     print('Успешный вход')
 
     menu = 0

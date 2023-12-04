@@ -1,21 +1,22 @@
 import sqlite3
 
-def executeQuerry(query, values = None):
+def __executeQuerry(query, values = None):
     try:
         with sqlite3.connect("database.bd") as conn:
             cursor = conn.cursor()
             if values: cursor.execute(query, values)
             else: cursor.execute(query)
+            return
     except sqlite3.Error as e:
         print(f"Ошибка: {e}")
-        return
+        return "Ошибка"
 
 def insertData(table, data):
     columns = ", ".join(data.keys())
     placeholders = ", ".join("?" for _ in data)
     querry = f"INSERT INTO {table} ({columns}) VALUES ({placeholders})"
-    executeQuerry(querry, list(data.values()))
-    return
+    error = __executeQuerry(querry, list(data.values()))
+    return error
 
 def updateData(table, data, filter):
     columns = ", ".join(f"{column} = ?" for column in data.keys())
@@ -23,11 +24,11 @@ def updateData(table, data, filter):
         value = item
     for item in filter.keys():
         key = item
-    querry = f"UPDATE {table} SET {columns} WHERE {key} = {value}"
+    querry = f"UPDATE {table} SET {columns} WHERE {key} = '{value}'"
     data_list = []
     for i in data.values():
         data_list.append(i)
-    executeQuerry(querry, data_list)
+    __executeQuerry(querry, data_list)
     return
 
 def deleteData(table, data):
@@ -36,7 +37,7 @@ def deleteData(table, data):
     for item in data.values():
         value = item
     querry = f"DELETE FROM {table} WHERE {key} = {value}"
-    executeQuerry(querry)
+    __executeQuerry(querry)
     return
 
 def selectData(table, column = None, filter = None):

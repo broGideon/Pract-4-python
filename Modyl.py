@@ -2,9 +2,9 @@ from abc import ABC, abstractmethod
 
 class Human(ABC):
     def __init__(self, email: str, login: str, password: str):
-        self._email = email
-        self._login = login
-        self._password = password
+        self.email = email
+        self.login = login
+        self.password = password
     @abstractmethod
     def create_data(self):
         pass
@@ -17,14 +17,13 @@ class User(Human):
         self._middle_name = middle_name
     @property
     def create_data(self):
-        return {"email": self._email, "login": self._login, "password": self._password, "surname": self._surname, "first_name": self._first_name, "middle_name": self._middle_name}
+        return {"email": self.email, "login": self.login, "password": self.password, "surname": self._surname, "first_name": self._first_name, "middle_name": self._middle_name}
 
 class Admin(Human):
     def __init__(self, email: str, login: str, password: str):
         super().__init__(email, login, password)
-    @property
     def create_data(self):
-        return {"email": self._email, "login": self._login, "password": self._password}
+        return {"email": self.email, "login": self.login, "password": self.password}
 
 class Season_ticket:
     def __init__(self, name_season_tickets: str, cost: float):

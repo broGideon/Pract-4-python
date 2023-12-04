@@ -3,8 +3,7 @@ import bd
 import CRUD
 import Admin
 import User
-import sqlite3
-bd
+bd.create_bd()
 
 def register_admin():
     email = input('Электронная почта: ')
@@ -12,8 +11,11 @@ def register_admin():
     password = input('Пароль: ')
     admin = Modyl.Admin(email, login, password)
     data = admin.create_data()
-    CRUD.insertData("admins", data)
-    Admin.use_admin(login, password)
+    error = CRUD.insertData("admins", data)
+    if error != "Ошибка":
+        Admin.use_admin(login, password)
+    else:
+        print("Пользователь с такими данными уже существует")
     return
 
 def register_user():
@@ -26,8 +28,11 @@ def register_user():
     if middle_name == '': middle_name = None
     user = Modyl.User(email, login, password, surname, first_name, middle_name)
     data = user.create_data
-    CRUD.insertData("users", data)
-    User.use_user(login, password)
+    error = CRUD.insertData("users", data)
+    if error != "Ошибка":
+        User.use_user(login, password)
+    else:
+        print("Пользователь с такими данными уже существует")
     return
 
 menu = 0
